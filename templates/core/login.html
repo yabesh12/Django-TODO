@@ -1,0 +1,40 @@
+{% extends 'core/base.html' %}
+
+
+
+{% block content %}
+    <style>
+     #hint_id_username, #hint_id_password1 {
+         display: none;
+     }
+</style>
+
+
+    <div class="container m-5 p-5">
+    <center><h2>Login</h2></center>
+    <form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+       {% block messages %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                  {{ message|safe }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% endblock %}
+      <div class="mb-3">
+        <label for="exampleInputEmail1" class="form-label">Email address</label>
+        <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+      </div>
+      <div class="mb-3">
+        <label for="exampleInputPassword1" class="form-label">Password</label>
+        <input type="password" name="password" class="form-control" id="exampleInputPassword1">
+      </div>
+
+      <button type="submit" class="btn btn-primary">Submit</button>
+     <a href="{% url 'signup' %}" class="btn btn-outline-primary">Sign Up</a>
+    </form>
+    </div>
+{% endblock %}

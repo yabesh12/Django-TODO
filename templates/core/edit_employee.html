@@ -1,0 +1,37 @@
+{% extends 'core/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="container m-5 p-5">
+    <center><h2>Edit Employee</h2></center>
+    <form method="post" action="{% url 'edit_employee' employee.id %}">
+        {% csrf_token %}
+      <div class="mb-3">
+
+        {{ form.first_name|as_crispy_field }}
+
+      </div>
+      <div class="mb-3">
+
+        {{ form.last_name|as_crispy_field }}
+      </div>
+        <div class="mb-3">
+
+        {{ form.mobile_no|as_crispy_field }}
+      </div>
+        <div class="mb-3">
+
+        {{ form.department|as_crispy_field }}
+      </div>
+        <div class="mb-3">
+
+        {{ form.address|as_crispy_field }}
+      </div>
+        <div class="mb-3">
+        {{ form.pincode|as_crispy_field }}
+      </div>
+
+      <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+    </div>
+{% endblock %}

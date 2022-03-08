@@ -1,0 +1,35 @@
+{% extends 'core/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <style>
+     #hint_id_username, #hint_id_password1 {
+         display: none;
+     }
+</style>
+
+
+    <div class="container m-5 p-5">
+    <center><h2>Sign Up</h2></center>
+    <form method="post" action="{% url 'signup' %}">
+        {% csrf_token %}
+      <div class="mb-3">
+        {{ form.first_name|as_crispy_field }}
+      </div>
+      <div class="mb-3">
+        {{ form.last_name|as_crispy_field }}
+      </div>
+      <div class="mb-3">
+        {{ form.email|as_crispy_field }}
+      </div>
+        <div class="mb-3">
+        {{ form.password1|as_crispy_field }}
+      </div>
+        <div class="mb-3">
+        {{ form.password2|as_crispy_field }}
+      </div>
+      <button type="submit" class="btn btn-primary">Submit</button>
+        <a href="{% url 'login' %}" class="btn btn-outline-primary">Login</a>
+    </form>
+    </div>
+{% endblock %}
