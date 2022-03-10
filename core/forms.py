@@ -13,10 +13,10 @@ class EmployeeForm(ModelForm):
 class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = CustomUser
-        fields = ('first_name', 'last_name', 'email',)
+        fields = ('first_name', 'last_name', 'username', 'email','mobile_no')
 
 
 class CustomUserChangeForm(UserChangeForm):
     class Meta:
         model = CustomUser
-        fields = ('first_name', 'last_name', 'email',)
+        fields = ('first_name', 'last_name', 'email','mobile_no')

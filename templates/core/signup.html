@@ -1,18 +1,26 @@
 {% extends 'core/base.html' %}
-{% load crispy_forms_tags %}
+{% load crispy_forms_filters %}
 
 {% block content %}
     <style>
-     #hint_id_username, #hint_id_password1 {
-         display: none;
-     }
-</style>
 
-
+    </style>
     <div class="container m-5 p-5">
-    <center><h2>Sign Up</h2></center>
+    <div style="text-align: center;"><h2>Sign Up</h2></div>
     <form method="post" action="{% url 'signup' %}">
         {% csrf_token %}
+
+        {% if form.errors %}
+           {% for field in form %}
+               {% for error in field.errors %}
+                  <div class="alert alert-danger">
+                       <strong>{{ error|escape }}</strong>
+                  </div>
+               {% endfor %}
+           {% endfor %}
+        {% endif %}
+
+
       <div class="mb-3">
         {{ form.first_name|as_crispy_field }}
       </div>
@@ -20,7 +28,13 @@
         {{ form.last_name|as_crispy_field }}
       </div>
       <div class="mb-3">
+        {{ form.username|as_crispy_field }}
+      </div>
+      <div class="mb-3">
         {{ form.email|as_crispy_field }}
+      </div>
+      <div class="mb-3">
+        {{ form.mobile_no|as_crispy_field }}
       </div>
         <div class="mb-3">
         {{ form.password1|as_crispy_field }}

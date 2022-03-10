@@ -3,15 +3,9 @@
 
 
 {% block content %}
-    <style>
-     #hint_id_username, #hint_id_password1 {
-         display: none;
-     }
-</style>
-
 
     <div class="container m-5 p-5">
-    <center><h2>Login</h2></center>
+    <div style="text-align: center;"><h2>Login</h2></div>
     <form method="post" action="{% url 'login' %}">
     {% csrf_token %}
        {% block messages %}
@@ -37,4 +31,6 @@
      <a href="{% url 'signup' %}" class="btn btn-outline-primary">Sign Up</a>
     </form>
     </div>
+
+
 {% endblock %}

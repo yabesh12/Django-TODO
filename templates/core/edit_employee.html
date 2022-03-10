@@ -1,11 +1,23 @@
 {% extends 'core/base.html' %}
-{% load crispy_forms_tags %}
+{% load crispy_forms_filters %}
 
 {% block content %}
     <div class="container m-5 p-5">
-    <center><h2>Edit Employee</h2></center>
+    <div style="text-align: center;"><h2>Edit Employee</h2></div>
     <form method="post" action="{% url 'edit_employee' employee.id %}">
         {% csrf_token %}
+
+        {% if form.errors %}
+           {% for field in form %}
+               {% for error in field.errors %}
+                  <div class="alert alert-danger">
+                       <strong>{{ error|escape }}</strong>
+                  </div>
+               {% endfor %}
+           {% endfor %}
+        {% endif %}
+
+
       <div class="mb-3">
 
         {{ form.first_name|as_crispy_field }}
@@ -32,6 +44,7 @@
       </div>
 
       <button type="submit" class="btn btn-primary">Submit</button>
+      <a href="{% url 'home' %}" class="btn btn-outline-primary">Employees List</a>
     </form>
     </div>
 {% endblock %}

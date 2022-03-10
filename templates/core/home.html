@@ -2,8 +2,8 @@
 
 {% block content %}
   <div class="container mt-5">
-      <center><h2>Employee List</h2></center>
-        <div class="dropdown">
+      <div style="text-align: center;"><h2>Employee List</h2></div><br>
+        <div style="text-align: center;"><div class="dropdown">
               <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                 {{ request.user.first_name }}
               </button>
@@ -11,15 +11,19 @@
                 <li><a class="dropdown-item" href="{% url 'logout' %}">Logout</a></li>
               </ul>
           </div>
-      
+        </div>
+
       <a class="btn btn-primary m-5" href="{% url 'add_employee' %}" role="button">Add Employee</a>
+
+      <a class="btn btn-outline-dark m-5" href="{% url 'payment' %}" role="button">Pay</a>
 
 
         {% if employees.count <= 0 %}
-        <center><h4>No records found</h4></center>
+        <div style="text-align: center;"><h4>No records found</h4></div>
+
         {% else %}
-            {% for employee in employees %}
-            <table class="table">
+
+        <table class="table">
               <thead>
                 <tr>
                   <th scope="col">First Name</th>
@@ -31,7 +35,7 @@
                 </tr>
               </thead>
               <tbody>
-
+                {% for employee in employees %}
                 <tr>
                   <th><a href="{{ employee.get_absolute_url }}">{{ employee.first_name }}</a></th>
                   <th><a href="{{ employee.get_absolute_url }}">{{ employee.last_name }}</a></th>
@@ -40,13 +44,23 @@
                     <th>{{ employee.address }}</th>
                     <th>{{ employee.pincode }}</th>
                     <th><a class="btn btn-primary" href="{% url 'edit_employee' employee.id %}" role="button">Edit</a></th>
-                    <th><a class="btn btn-danger" href="{% url 'delete_employee' employee.id %}" role="button">Delete</a></th>
 
+                    <form method="post" action="{% url 'delete_employee' employee.id %}">
+                        {% csrf_token %}
+                        {% if messages %}
+                            {% for message in messages %}
+                                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                  {{ message|safe }}
+                                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                        <th><button class="btn btn-danger" type="submit" >Delete</button></th>
+                    </form>
                 </tr>
-
+                {% endfor %}
               </tbody>
-            </table>
-            {% endfor %}
+        </table>
         {% endif %}
   </div>
 
