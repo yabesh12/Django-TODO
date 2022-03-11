@@ -4,11 +4,9 @@ from django.contrib import messages
 from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseBadRequest
-from django.http import JsonResponse
+from django.http import HttpResponseBadRequest, JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.decorators.csrf import csrf_exempt
-
 from core.forms import EmployeeForm, CustomUserCreationForm
 from core.models import Employee, CustomUser
 
@@ -60,7 +58,7 @@ def edit_employee(request, pk):
             form.save()
             return redirect('home')
         else:
-            return form.errors
+            print(form.errors)
 
 
 # Delete Employee
@@ -89,31 +87,71 @@ def signup(request):
             messages.success(request, "You are signed up. you can login now.")
             return redirect("login")
         else:
-            return form.errors
+            print(form.errors)
     else:
         form = CustomUserCreationForm()
     return render(request, 'core/signup.html', {'form': form})
 
 
-# Login
+# Login with email or mobile
 def login_user(request):
-    if request.POST:
+    if request.method == 'POST':
 
-        username = request.POST['email']
-        password = request.POST['password']
+        u = request.POST.get('email')
+        p = request.POST.get('password')
 
-        user = authenticate(username=username, password=password)
-        if user is not None and user.is_active:
-            auth_login(request, user)
-            return redirect('home')
-        elif CustomUser.objects.filter(email=username).exists():
-            messages.error(request, "Your email or password is incorrect")
+        # Check with Email
+        if '@' in u:
+            user_check = authenticate(request, email=u, password=p)
+            if user_check is not None and user_check.is_active:
+                auth_login(request, user_check)
+                return redirect('home')
+            elif CustomUser.objects.filter(email=u).exists():
+                messages.error(request, "Email or password is incorrect")
+            else:
+                messages.error(request, "You are not registered. Please signup first")
+            return render(request, 'core/login.html')
+
+        # Check with Mobile
         else:
-            messages.error(request, "You are not registered. Please signup first")
-        return render(request, 'core/login.html')
+            try:
+                user_mobile = CustomUser.objects.get(mobile_no=u)  # search in our model and find user with phone
+                user_pwd = user_mobile.check_password(p)
+                if user_mobile is not None and user_pwd and user_mobile.is_active:
+                    auth_login(request, user_mobile)
+                    return redirect('home')
+                elif user_mobile is not None and user_mobile.is_active:
+                    messages.error(request, "Mobile number or password is incorrect")
+
+                else:
+                    messages.error(request, "You are not registered. Please signup first")
+                return render(request, 'core/login.html')
+
+            except:
+                messages.error(request, "The user does not exist")
+                return render(request, 'core/login.html')
     else:
         return render(request, 'core/login.html')
 
+
+# # Login
+# def login_user(request):
+#     if request.POST:
+#
+#         username = request.POST['email']
+#         password = request.POST['password']
+#
+#         user = authenticate(username=username, password=password)
+#         if user is not None and user.is_active:
+#             auth_login(request, user)
+#             return redirect('home')
+#         elif CustomUser.objects.filter(email=username).exists():
+#             messages.error(request, "Your email or password is incorrect")
+#         else:
+#             messages.error(request, "You are not registered. Please signup first")
+#         return render(request, 'core/login.html')
+#     else:
+#         return render(request, 'core/login.html')
 
 
 # Logout
@@ -152,6 +190,28 @@ def payment_page(request):
 
 
 @csrf_exempt
+def payment_verification(request):
+    if request.method == "POST":
+        return request.POST
+    #     key = "deepsense"
+    #     message = webhook_body
+    #     received_signature = webhook_signature
+    #
+    #     expected_signature = hmac('sha256', message, key)
+    #
+    #     try:
+    #         if expected_signature != received_signature:
+    #             print("true")
+    #         else:
+    #             pass
+    #     except Exception as e:
+    #         print(e)
+    #
+    # else:
+    #     pass
+
+
+@csrf_exempt
 def callback(request):
     # only accept POST request.
     if request.method == "POST":
@@ -185,8 +245,8 @@ def callback(request):
                     else:
 
                         # render success page on successful capture of payment
-                        return JsonResponse(params_dict)
-                        # return render(request, 'core/payment_success.html')
+                        # return JsonResponse(params_dict)
+                        return render(request, 'core/payment_success.html')
                         # else:
                         #     return redirect('payment')
                 except:

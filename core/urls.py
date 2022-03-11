@@ -12,6 +12,7 @@ urlpatterns = [
     path('delete-employee<int:pk>/', views.delete_employee, name='delete_employee'),
     path('payment/', views.payment_page, name='payment'),
     # path('order-payment/', views.order_payment, name='order_payment'),
+    path('verification/', views.payment_verification, name='verification'),
     path('payment/callback/', views.callback, name='callback'),
 
 ]
