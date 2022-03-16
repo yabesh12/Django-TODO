@@ -14,5 +14,6 @@ urlpatterns = [
     # path('order-payment/', views.order_payment, name='order_payment'),
     path('verification/', views.payment_verification, name='verification'),
     path('payment/callback/', views.callback, name='callback'),
+    # path('payment-refund/<int:id>', views.payment_refund, name='payment_refund'),
 
 ]

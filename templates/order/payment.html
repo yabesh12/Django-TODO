@@ -1,0 +1,69 @@
+{#{% extends 'core/base.html' %}#}
+{#{% block content %}#}
+{#<form method="POST">#}
+{#    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>#}
+{#    <script>#}
+{#    var options = {#}
+{#        key: "{{razorpay_key}}",#}
+{#        amount: "{{amount}}",#}
+{#        currency: "INR",#}
+{#        name: "{{order.name}}",#}
+{#        description: "Test Transaction",#}
+{#        image: "https://example.com/your_logo",#}
+{#        order_id: "{{order.provider_order_id}}",#}
+{#        callback_url: "{{callback_url}}",#}
+{#        redirect: true,#}
+{#        prefill: {#}
+{#            "name": "test user",#}
+{#            "email": "test@example.com",#}
+{#            "contact": "9999999999"#}
+{#        },#}
+{#        notes: {#}
+{#            "address": "Razorpay Corporate Office"#}
+{#        },#}
+{#        theme: {#}
+{#            "color": "#3399cc"#}
+{#        }#}
+{#    };#}
+{#    var rzp1 = new Razorpay(options);#}
+{#    rzp1.open();#}
+{#    </script>#}
+{#    <input type="hidden" custom="Hidden Element" name="hidden">#}
+{#</form>#}
+{#{% endblock %}#}
+
+
+
+
+
+{% extends 'core/base.html' %}
+{% block content %}
+<div class="col-6 mx-auto" style="margin-top:10%;">
+    <form action="{% url 'order:payment' %}" method='POST'>
+        {% csrf_token %}
+        <center><h2>Order Item</h2></center>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Name</label>
+          <input type="text" name="name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Email</label>
+          <input type="email" name="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputEmail1" class="form-label">Mobile</label>
+          <input type="text" name="mobile" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Amount</label>
+          <input type="number" name="amount" class="form-control" id="exampleInputPassword1">
+        </div>
+        <div>
+        <button type="submit" class="btn btn-primary">Pay Now</button>
+        </div>
+      </form>
+
+
+
+</div>
+{% endblock %}

@@ -176,9 +176,6 @@ def payment_page(request):
 
     # order id of newly created order.
     razorpay_order_id = razorpay_order['id']
-
-    # razorpay_client.utility.verify_webhook_signature(webhook_body, webhook_signature, webhook_secret)
-
     callback_url = 'callback/'
 
     # we need to pass these details to frontend.
@@ -192,23 +189,18 @@ def payment_page(request):
 @csrf_exempt
 def payment_verification(request):
     if request.method == "POST":
-        return request.POST
-    #     key = "deepsense"
-    #     message = webhook_body
-    #     received_signature = webhook_signature
-    #
-    #     expected_signature = hmac('sha256', message, key)
-    #
-    #     try:
-    #         if expected_signature != received_signature:
-    #             print("true")
-    #         else:
-    #             pass
-    #     except Exception as e:
-    #         print(e)
-    #
-    # else:
-    #     pass
+        print(request.body)
+        key = "deepsense"
+        message = request.body.decode('utf-8')
+        received_signature = request.headers.get("X-Razorpay-Signature")
+        print(received_signature)
+        verify = razorpay_client.utility.verify_webhook_signature(message, received_signature, key)
+        print(verify)
+
+    else:
+        pass
+
+    return JsonResponse({"status": "ok"})
 
 
 @csrf_exempt
@@ -264,3 +256,15 @@ def callback(request):
     else:
         # if other than POST request is made.
         return HttpResponseBadRequest()
+
+
+# #Payment Refund
+# @csrf_exempt
+# def payment_refund(request,id=None):
+#     if request.method == "POST":
+#         payment_id = "pay_J6qM7XlhYNKMIw"
+#         payment_amount  = 20000
+#
+
+
+

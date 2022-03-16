@@ -51,12 +51,12 @@ PAYMENT_STATUS = (
 )
 
 
-class Order(models.Model):
-    name = models.CharField(max_length=200, blank=True, null=True)
-    amount = models.PositiveIntegerField(blank=True)
-    status = models.CharField(max_length=200, choices=PAYMENT_STATUS, default="PENDING", blank=True, null=True)
-    order_id = models.CharField(max_length=250, null=True, blank=True)
-    payment_id = models.CharField(max_length=250, null=True, blank=True)
-
-    def __str__(self):
-        return str(self.name)
+# class Order(models.Model):
+#     name = models.CharField(max_length=200, blank=True, null=True)
+#     amount = models.PositiveIntegerField(blank=True)
+#     status = models.CharField(max_length=200, choices=PAYMENT_STATUS, default="PENDING", blank=True, null=True)
+#     order_id = models.CharField(max_length=250, null=True, blank=True)
+#     payment_id = models.CharField(max_length=250, null=True, blank=True)
+#
+#     def __str__(self):
+#         return str(self.name)
