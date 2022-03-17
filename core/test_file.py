@@ -106,3 +106,12 @@ person2 = Person.from_birth_year('Test', 1995)
 
 # print the result
 print(Person.is_adult(22))
+
+a = "hello world"
+if (n := len(a)) > 10:
+    print(f"List is too long ({n} elements, expected <= 10)")
+else:
+    print(f"List is ok")
+
+
+
