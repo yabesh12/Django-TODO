@@ -57,3 +57,4 @@ sqlparse==0.4.3
 texttable==1.6.5
 urllib3==1.26.12
 websocket-client==0.59.0
+whitenoise==6.2.0
