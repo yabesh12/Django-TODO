@@ -30,7 +30,7 @@ ALLOWED_HOSTS = ['*']
 
 # CSRF_TRUSTED_ORIGINS = ['*']
 
-CSRF_TRUSTED_ORIGINS = ['https://406d-223-226-4-20.ngrok.io']
+CSRF_TRUSTED_ORIGINS = ['https://ceaseless-pleasure-production.up.railway.app']
 
 # Application definition
 
