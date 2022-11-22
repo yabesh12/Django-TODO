@@ -34,7 +34,7 @@ def order_payment(request):
             "order/payment_page.html",
             {
                 # "callback_url": "http://" + "127.0.0.1:8000" + "/order/callback/",
-                "callback_url": "https://" + "2201-106-201-164-239.ngrok.io" + "/order/callback/",
+                "callback_url": "https://" + "406d-223-226-4-20.ngrok.io" + "/order/callback/",
                 "razorpay_key": settings.RAZOR_KEY_ID,
                 "order": order,
             },
@@ -45,6 +45,7 @@ def order_payment(request):
 @csrf_exempt
 def callback(request):
     def verify_signature(response_data):
+        print(request.POST)
         print(response_data)
         client = razorpay.Client(auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
         return client.utility.verify_payment_signature(response_data)
@@ -89,6 +90,43 @@ def callback(request):
         order.save()
         return render(request, "core/payment_fail.html", context={"status": order.status})
 
+# @csrf_exempt
+# def callback(request):
+#     print(request.POST)
+#     client = razorpay.Client(auth=(settings.RAZOR_KEY_ID, settings.RAZOR_KEY_SECRET))
+#     result = client.utility.verify_payment_signature(request.POST)
+#     if result:
+#         payment_id = request.POST.get("razorpay_payment_id", "")
+#         provider_order_id = request.POST.get("razorpay_order_id", "")
+#         signature_id = request.POST.get("razorpay_signature", "")
+#         order = Order.objects.get(provider_order_id=provider_order_id)
+#         order.payment_id = payment_id
+#         order.signature_id = signature_id
+#         order.status = "SUCCESS"
+#         order.save()
+#         payment = Payment.objects.get(order_id=order.id)
+#         # payment.order = order
+#         payment.payment_id = order.payment_id
+#         payment.razorpay_id = provider_order_id
+#         payment.amount = order.amount
+#         payment.payment_signature = order.signature_id
+#         payment.json_data = request.body.decode('utf-8')
+#         payment.status = "SUCCESS"
+#         payment.save()
+#         return render(request, "core/payment_success.html", context={"status": order.status})
+#     else:
+#         payment_id = json.loads(request.POST.get("error[metadata]")).get("payment_id")
+#         provider_order_id = json.loads(request.POST.get("error[metadata]")).get(
+#             "order_id"
+#         )
+#         order = Order.objects.get(provider_order_id=provider_order_id)
+#         order.payment_id = payment_id
+#         order.status = "FAILURE"
+#         order.save()
+#         return render(request, "core/payment_fail.html", context={"status": order.status})
+#
+
+
 
 @csrf_exempt
 def payment_verification(request):
@@ -107,6 +145,11 @@ def payment_verification(request):
                 payment = payload.get('payment')
                 entity = payment.get('entity')
                 # payment_id = entity['id']
+                error_code = entity.get('error_code')
+                error_description = entity.get('error_description')
+                error_source = entity.get('error_source')
+                error_step = entity.get('error_step')
+                error_reason = entity.get('error_reason')
                 payment_id = entity.get('id')
                 payment_status = entity.get('status')
                 item_order_id = entity.get('order_id')
@@ -169,6 +212,11 @@ def payment_verification(request):
                 new_transaction.tax = tax
                 new_transaction.email = email
                 new_transaction.contact = contact
+                new_transaction.error_code = error_code
+                new_transaction.error_step = error_step
+                new_transaction.error_reason = error_reason
+                new_transaction.error_source = error_source
+                new_transaction.error_description = error_description
                 new_transaction.json_transaction_data = message
                 new_transaction.save()
                 print(new_transaction.transaction_status)

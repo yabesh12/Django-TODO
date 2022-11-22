@@ -30,7 +30,7 @@ ALLOWED_HOSTS = ['*']
 
 # CSRF_TRUSTED_ORIGINS = ['*']
 
-CSRF_TRUSTED_ORIGINS = ['https://2201-106-201-164-239.ngrok.io']
+CSRF_TRUSTED_ORIGINS = ['https://406d-223-226-4-20.ngrok.io']
 
 
 # Application definition
@@ -133,5 +133,5 @@ STATIC_URL = 'static/'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-RAZOR_KEY_ID = "rzp_test_T20IS7om0ajueg"
-RAZOR_KEY_SECRET = "B9t49nUEHzF5YLW4eBKqLq0B"
+RAZOR_KEY_ID = "rzp_test_amnETUOOrLTTi6"
+RAZOR_KEY_SECRET = "b843R97yrvCNGvw78M2oatfW"
