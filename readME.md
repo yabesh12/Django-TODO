@@ -6,4 +6,4 @@
 <h5>4. Logout</h5>
 
 
-<h6><a href="https://ceaseless-pleasure-production.up.railway.app/">Django TODO APP Link</h6>
+<h6><a href="https://django-todo-production-3d57.up.railway.app/">Django TODO APP Link</h6>
