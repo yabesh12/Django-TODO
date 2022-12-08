@@ -30,7 +30,7 @@ ALLOWED_HOSTS = ['*']
 
 # CSRF_TRUSTED_ORIGINS = ['*']
 
-CSRF_TRUSTED_ORIGINS = ['https://ceaseless-pleasure-production.up.railway.app', 'https://django-todo-production-3d57.up.railway.app']
+CSRF_TRUSTED_ORIGINS = ['https://ceaseless-pleasure-production.up.railway.app', 'https://django-todo-production-3d57.up.railway.app', 'https://*.railway.app']
 
 # Application definition
 
